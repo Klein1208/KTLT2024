@@ -49,7 +49,8 @@ void Tao(voucherList &vList){
              << vList.time_start << "," << vList.time_end << "," << endl;
     }
     file.close();
-    cout << "Tạo Thành Công";
+    cout << "Tạo Thành Công.\n";
+    menuVoucher();
 }
 void TenChuongTrinh(voucherList& vList){
     cout << "Điền Tên chương trình: "
@@ -143,7 +144,7 @@ void DateEnd(voucherList& vList){
 }
 void TaoVoucher(){
     voucherList vList;
-    TenChuongTrinh(vList);   
+    TenChuongTrinh(vList);  
 }
 
 string LayThoiGianThuc(){ // Lấy thời gian thực tế
@@ -198,20 +199,25 @@ void KiemtraChuowngTrinh(){
         cout << "Chương trình đang diễn ra." << endl;
     }
     else if( SoSanhTime(now,vList[a].time_end)==1){
-        cout << "Chương trình đã kết thúc";
+        cout << "Chương trình đã kết thúc" << endl;
     }
+    menuVoucher();
     }
     
 }
 
 void KtVoucher(){
     docFileVoucher();
+    cout << "Diền mã voucher muốn kiểm tra: \n0.Quay lại\n";
     string Ma;
-    cout << "Diền mã voucher muốn kiểm tra: ";
     cin.ignore();
     getline(cin,Ma);
-    int a=0;
-    for(int i=0; i<vList.size(); i++){
+    if(Ma=="0"){
+        menuVoucher();
+    }
+    else{
+        int a=0;
+        for(int i=0; i<vList.size(); i++){
         if(Ma== vList[i].maVoucher){
             a=i;
             break;
@@ -234,23 +240,30 @@ void KtVoucher(){
             cout << "Chương trình đang diễn ra." << endl;
         }
         else if( b==1){
-            cout << "Chương trình đã kết thúc";
+            cout << "Chương trình đã kết thúc.\n";
         }
+        KtVoucher();
     }
     else
     {
-        cout << "Không có mã giảm giá hoặc nhập sai mã giảm giá.";
+        cout << "Không có mã giảm giá hoặc nhập sai mã giảm giá.\n";
+        KtVoucher();
+    }
     }
 }
 
 void loaiChuongTrinh(){
     docFileVoucher();
     vector<voucherList> vlist;
-    cout << "Điền tên chương trình giảm giá:";
+    cout << "Điền tên chương trình giảm giá:\n 0.Quay lại.\n";
     string ChuongTrinh;
     cin.ignore();
     getline(cin,ChuongTrinh);
-    int dem1=0, dem0=0, a=0;
+    if(ChuongTrinh=="0"){
+        menuVoucher();
+    }
+    else{
+        int dem1=0, dem0=0, a=0;
     for(int i=0; i<vList.size(); i++){
         if(ChuongTrinh != vList[i].ChuongTrinh){
             vlist.push_back(vList[i]);
@@ -262,10 +275,14 @@ void loaiChuongTrinh(){
     if (a==0)
     {
         cout << "Không có chương trình ưu đãi.";
+        loaiChuongTrinh();
     }
     else{
         copy(vlist.begin(),vlist.end(), vList.begin());
         ghiFileVoucher();
         cout << "Đã xóa thành công." << endl;
+        menuVoucher();
     }
+    }
+    
 }
